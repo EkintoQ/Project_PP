@@ -15,6 +15,8 @@ class UserController{
         let offset = page * limit - limit
         let users
         users = await User.findAndCountAll({
+            limit,
+            offset,
             where: {
                 isDeleted: false
                 }

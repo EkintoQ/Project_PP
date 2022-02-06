@@ -7,6 +7,7 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 import {fetchUser} from "../http/userAPI";
 import ChangeUserInfo from "../components/ChangeUserInfo";
+import Pages from "../components/Pages";
 
 const User = observer(() => {
     const [addUserVisible, setAddUserVisible] = useState(false)
@@ -15,8 +16,18 @@ const User = observer(() => {
     const {users} = useContext(Context)
 
     useEffect(()=>{
-        fetchUser().then(data => users.setUsers(data.rows))
+        fetchUser().then(data => {
+            users.setUsers(data.rows)
+            users.setTotalCount(data.count)
+        })
     },[])
+
+    useEffect(() =>{
+        fetchUser(users.page).then(data => {
+            users.setUsers(data.rows)
+            users.setTotalCount(data.count)
+        })
+    },[users.page])
 
     return (
         <div>
@@ -27,6 +38,7 @@ const User = observer(() => {
             className="d-flex justify-content-center align-items-center"
             style={{height: window.innerHeight-60}}
             >
+            <Pages />
             <TableOfUsers />
             <Button className="m-md-2"
                     onClick={() => setAddUserVisible(true)}>

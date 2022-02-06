@@ -5,8 +5,10 @@ export const createUser = async (user) => {
     return data
 }
 
-export const fetchUser = async() => {
-    const {data} = await $host.get('api/user')
+export const fetchUser = async(page, limit = 9) => {
+    const {data} = await $host.get('api/user', {params: {
+        page, limit
+        }})
     return data
 }
 
