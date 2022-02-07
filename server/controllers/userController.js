@@ -1,7 +1,43 @@
 const {User} = require('../models/models')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const ApiError = require('../error/ApiError')
 
+const generateJwt = (id, login, role) => {
+    return jwt.sign(
+        {id, login, role},
+        process.env.SECRET_KEY,
+        {expiresIn: '6h'},
+        ''
+    )
+}
+
 class UserController{
+    async login(req, res, next) {
+        const {login, password} = req.body
+        const user = await User.findOne({
+                where: {
+                    login: login
+                }
+            })
+        if (!user) {
+            return next(ApiError.internal('User with this login does not exist'))
+        }
+        if (user.isDeleted === true) {
+            return next(ApiError.internal('User with this login was deleted'))
+        }
+        if (password !== user.password) {
+            return next(ApiError.internal('Wrong password'))
+        }
+        const token = generateJwt(user.id, user.login, user.role)
+        return res.json({token})
+    }
+
+    async check(req, res) {
+        const token = generateJwt(req.user.id, req.user.login, req.user.role)
+        return res.json({token})
+    }
+
     async create(req, res) {
         const {name, surname, dateOfBirth, role, login, password, isDeleted} = req.body
         const users = await User.create({name, surname, dateOfBirth, role, login, password, isDeleted})
