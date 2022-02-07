@@ -2,7 +2,9 @@ import {makeAutoObservable} from "mobx";
 
 export default class UserStore {
     constructor() {
+        this._isAdmin = false
         this._isAuth = false
+        this._data = []
         this._users = []
         this._page = 1
         this._totalCount = 0
@@ -10,6 +12,12 @@ export default class UserStore {
         makeAutoObservable(this)
     }
 
+    setData(data){
+        this._data = data
+    }
+    setIsAdmin(bool) {
+        this._isAdmin = bool
+    }
     setIsAuth(bool) {
         this._isAuth = bool
     }
@@ -26,6 +34,12 @@ export default class UserStore {
         this._limit = limit
     }
 
+    get isData() {
+        return this._data
+    }
+    get isAdmin() {
+        return this._isAdmin
+    }
     get isAuth() {
         return this._isAuth
     }

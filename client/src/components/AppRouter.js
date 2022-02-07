@@ -12,7 +12,7 @@ const AppRouter = observer(() => {
             {publicRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component/>} exact/>
             )}
-            {users.isAuth && adminRoutes.map(({path, Component}) =>
+            {users.isAuth && users.isAdmin && adminRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component/>} exact/>
             )}
             <Route path="*" element={<Navigate to="/" />} />

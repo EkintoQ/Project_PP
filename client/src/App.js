@@ -4,7 +4,7 @@ import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
 import {observer} from "mobx-react-lite";
 import {Context} from "./index";
-import {checkUser} from "./http/userAPI";
+import {checkAdmin, checkUser} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
 
 const App = observer(() => {
@@ -13,6 +13,10 @@ const App = observer(() => {
 
     useEffect(() => {
         if (localStorage.getItem('token')){
+            if (localStorage.getItem('role') === 'ADMIN'){
+            checkAdmin().then(data => {
+                users.setIsAdmin(true)
+            })}
             checkUser().then(data => {
                 users.setIsAuth(true)
             }).finally(() => setLoading(false))

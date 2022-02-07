@@ -10,7 +10,9 @@ const NavBar = observer(() => {
 
     const logOut = () =>{
         localStorage.removeItem('token')
+        localStorage.removeItem('role')
         users.setIsAuth(false)
+        users.setIsAdmin(false)
     }
 
     return (
@@ -28,9 +30,14 @@ const NavBar = observer(() => {
                             Log Out
                         </NavLink>
                     }
+                    {users.isAdmin ?
                         <NavLink href={ADMIN_ROUTE}>
                             AdminPanel
                         </NavLink>
+                        :
+                        <div>
+                        </div>
+                    }
                 </Nav>
             </Container>
         </Navbar>

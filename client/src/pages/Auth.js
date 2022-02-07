@@ -15,7 +15,11 @@ const Auth = observer(() => {
     const logIn = async () => {
         try {
             let user = await loginUser(login, password)
+            users.setData(user)
             users.setIsAuth(true)
+            if (users.isData.role === 'ADMIN') {
+                console.log(users.isData.role)
+                users.setIsAdmin(true)}
             navigate('/')
         } catch (e) {
             alert(e)

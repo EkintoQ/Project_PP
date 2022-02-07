@@ -9,6 +9,7 @@ router.post('/login', userController.login)
 router.get('/', userController.getAll)
 router.get('/getAll', userController.getAllAll)
 router.get('/auth', authMiddleware, userController.check)
+router.get('/admin', role('ADMIN'), userController.check)
 router.put('/', role('ADMIN'), userController.delete)
 router.put('/change', role('ADMIN'), userController.changeInfo)
 
